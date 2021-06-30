@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quản lý sản phẩm</title>
+
+    <th:block th:replace="layout/link.html :: headerLink">
+    </th:block>
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <th:block th:replace="layout/sidebar.html :: siderbar"></th:block>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Danh sách sản phẩm</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <button type="button" class="btn btn-outline-primary btn-icon-split"
+                                    onclick="products.addNew()">Thêm sản phẩm
+                            </button>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!--    modal add edit    -->
+        <div class="modal" id="modalAddEdit" name="modalAddEdit">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modalTitle" name="modalTitle"></h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <form id="formAddEdit" name="formAddEdit" class="row">
+                            <div class="col">
+                                <input type="hidden" id="idProduct">
+                                <div class="row form-group">
+                                    <div class="col-3">
+                                        <label>Tên sản phẩm</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input class="form-control" type="text"
+                                               name="productName" id="productName"
+                                               data-rule-required=true>
+                                        <small id="name-product" class="text-danger"></small>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group">
+                                    <div class="col-3">
+                                        <label>Giá</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input class="form-control" type="number"
+                                               name="price" id="price"
+                                               data-rule-required=true>
+                                        <small id="price-product" class="text-danger"></small>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-3">
+                                        <label>Ảnh</label>
+                                    </div>
+                                    <div class="col-9">
+                                            <input class="form-control" type="hidden"
+                                                   name="imgUrl" id="imgUrl">
+
+                                            <input class="form-control-file" type="file"
+                                                   name="multiImage" id="multiImage"
+                                                   data-rule-required=true onchange="products.saveImage()">
+                                            <small id="upload-loading"></small>
+                                            <div id="done-upload" class="mt-2">
+                                            </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row form-group">
+                                    <div class="col-3">
+                                        <label>Dòng sản phẩm</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <select class="form-control" name="productType" id="productType">
+                                            <option th:each="product : ${productTypes}" th:value="${product.id}" th:text="${product.nameProductType}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <div id="save-btn"></div>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!--      modal product view  -->
+        <div class="modal" id="modalView" name="modalView">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modalViewTitle" name="modalViewTitle"></h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <form id="formView" name="formView" class="row">
+                            <input type="hidden" id="idProductView">
+                            <div class="col">
+                                <div class="row form-group">
+                                    <div class="col-5">
+                                        <label>Tên sản phẩm</label>
+                                    </div>
+                                    <div class="col-7">
+                                        <label id="productNameView"></label>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-5">
+                                        <label>Giá</label>
+                                    </div>
+                                    <div class="col-7">
+                                        <label id="priceView"></label>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-5">
+                                        <label>Giá</label>
+                                    </div>
+                                    <div class="col-7">
+                                        <label id="view-upload"></label>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-5">
+                                        <label>Dòng sản phẩm</label>
+                                    </div>
+                                    <div class="col-7">
+                                        <label id="productTypeView"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col">
+                        <table id="product-dataTables" width="100%" cellspacing="0" class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Tên sản phẩm</th>
+                                <th>Giá</th>
+                                <th>Ảnh</th>
+                                <th>loại sản phẩm</th>
+                                <th>Chức năng</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <footer class="main-footer">
+        <div class="float-right d-none d-sm-block">
+            <b>Version</b> 3.1.0
+        </div>
+        <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+    </footer>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<th:block th:replace="layout/link.html :: scriptLink"></th:block>
+<!-- Page specific script -->
+</body>
+</html>

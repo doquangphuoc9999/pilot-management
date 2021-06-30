@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trang chủ</title>
+
+  <th:block th:replace="layout/link.html :: headerLink">
+  </th:block>
+
+<!--  css armchart   -->
+  <style>
+    #chartdiv {
+      width: 100%;
+      height: 500px;
+    }
+  </style>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+<!--  siderbar -->
+  <th:block th:replace="layout/sidebar.html :: siderbar">
+
+  </th:block>
+
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid ">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Doanh thu</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a th:href="@{/templates/admins}">Trang chủ</a></li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+<!--    armchart    -->
+        <div id="chartdiv"></div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+
+<!-- footer -->
+  <th:block th:replace="layout/footer.html :: footer">
+
+  </th:block>
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!--  link js   -->
+<th:block th:replace="layout/link.html :: scriptLink">
+
+</th:block>
+</body>
+</html>
