@@ -190,7 +190,7 @@ products.get = function (id) {
     });
 }
 
-// modal add and edit
+// modal add and edit 1
 products.addNew = function () {
     console.log('vo add new');
     $('#formAddEdit')[0].reset();
